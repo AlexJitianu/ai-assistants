@@ -13,7 +13,7 @@ client = OpenAI(
 
 def call_openai_assistant(prompt):
     try:
-		client = OpenAI()
+        client = OpenAI()
         response = client.completions.create(
             model="gpt-4o-mini",
             prompt=prompt,
