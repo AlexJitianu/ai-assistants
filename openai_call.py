@@ -23,7 +23,7 @@ def call_openai_assistant(prompt):
           ],
           model="gpt-3.5-turbo",
 )
-        return response.choices[0].text.strip()
+        return response
     except Exception as e:
         return f"Error: {str(e)}"
 
