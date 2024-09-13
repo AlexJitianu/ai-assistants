@@ -1,14 +1,21 @@
 import os
 import openai
+import json
 
-# Load your OpenAI API key from the environment variable
-api_key = os.getenv("OPENAI_API_KEY")
-openai.api_key = api_key
+openai.api_key = os.environ['OPENAI_API_KEY']
+
+# new
+from openai import OpenAI
+
+client = OpenAI(
+  api_key=os.environ['OPENAI_API_KEY'],  # this is also the default, it can be omitted
+)
 
 def call_openai_assistant(prompt):
     try:
-        response = openai.Completion.create(
-            engine="gpt-4o-mini",  # Use your desired engine/model
+		client = OpenAI()
+        response = client.completions.create(
+            model="gpt-4o-mini",
             prompt=prompt,
             max_tokens=100
         )
