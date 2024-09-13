@@ -1,0 +1,28 @@
+name: OpenAI Assistant Call
+
+on:
+  push:
+    branches:
+      - main  # Run the workflow on pushes to the main branch
+
+jobs:
+  call_openai:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'  # Specify the Python version
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install openai
+
+      - name: Run OpenAI script
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # Use GitHub secret for the API key
+        run: python openai_call.py
