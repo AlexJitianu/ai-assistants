@@ -14,11 +14,15 @@ client = OpenAI(
 def call_openai_assistant(prompt):
     try:
         client = OpenAI()
-        response = client.completions.create(
-            model="gpt-4o-mini",
-            prompt=prompt,
-            max_tokens=100
-        )
+        response = client.chat.completions.create(
+          messages=[
+            {
+              "role": "user",
+              "content": "Say this is a test",
+            }
+          ],
+          model="gpt-3.5-turbo",
+)
         return response.choices[0].text.strip()
     except Exception as e:
         return f"Error: {str(e)}"
