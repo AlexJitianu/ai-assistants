@@ -51,6 +51,8 @@ jobs:
           git add .
           git commit -m "Grammar check task"
           git push origin grammar-check-bot
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
