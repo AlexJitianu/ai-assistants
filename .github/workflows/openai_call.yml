@@ -36,3 +36,28 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # Use GitHub secret for the API key
         run: python openai_call.py ${{ steps.changes.outputs.files }}
+
+
+        - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create a new branch
+        run: git checkout -b grammar-check-bot
+
+      - name: Commit and push changes
+        run: |
+          git add .
+          git commit -m "Grammar check task"
+          git push origin grammar-check-bot
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.ACTIONS_BOT }}
+          commit-message: "Processed files and create pull request"
+          branch: new-branch
+          base: main
+          title: "Processed files and updated"
+          body: "This PR contains processed files from the GitHub Actions workflow."
