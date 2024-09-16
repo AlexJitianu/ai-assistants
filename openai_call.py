@@ -56,8 +56,8 @@ if __name__ == "__main__":
 
     # Iterate through each file and process it
     for file in changed_files:
+        print(f"File: {file}")
         if os.path.exists(file):
-            print(f"Changed file: {file}")
             process_file(file)
         else:
             print(f"File not found: {file}")
