@@ -29,5 +29,18 @@ def call_openai_assistant(prompt):
 
 if __name__ == "__main__":
     prompt = "Hello, OpenAI assistant! How are you?"
+    
+    
+    # TODO Create a prompt to check grammar for each file from the docs folder
+    
     result = call_openai_assistant(prompt)
     print(f"Response: {result}")
+
+    changed_files = sys.argv[1:]
+
+    # Iterate through each file and process it
+    for file in changed_files:
+        if os.path.exists(file):
+            print(f"Changed file: {file}")
+        else:
+            print(f"File not found: {file}")
