@@ -38,7 +38,7 @@ jobs:
         run: python openai_call.py ${{ steps.changes.outputs.files }}
 
 
-        - name: Configure Git
+      - name: Configure Git
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
