@@ -28,7 +28,7 @@ def call_openai_assistant(prompt, content):
           ],
           model="gpt-3.5-turbo",
 )
-        return response
+        return response.choices[0].message.content
     except Exception as e:
         return f"Error: {str(e)}"
 
