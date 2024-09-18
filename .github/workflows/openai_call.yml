@@ -34,10 +34,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install --upgrade openai
 
-      - name: Run OpenAI script
+      - name: Run OpenAI correct grammar script
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # Use GitHub secret for the API key
-        run: python openai_call.py ${{ steps.changes.outputs.files }}
+        run: python assistant.py ${{ steps.changes.outputs.files }}
+        
 
 
       - name: Configure Git
