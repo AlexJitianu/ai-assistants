@@ -51,7 +51,7 @@ jobs:
 
       - name: Commit and push changes
         run: |
-          git add .
+          git add . -- :!pr_message.txt  # Exclude pr_message.txt from git add
           git commit -m "Grammar check task"
           git push origin grammar-check-bot
         env:
