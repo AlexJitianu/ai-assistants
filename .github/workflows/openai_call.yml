@@ -18,6 +18,7 @@ jobs:
       - name: Get list of changed files
         id: changes
         run: |
+          git checkout main
           git fetch --depth=2
           CHANGED_FILES=$(git diff --name-only HEAD^ HEAD | tr '\n' ' ')
           echo "Changed files: $CHANGED_FILES"
