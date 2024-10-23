@@ -22,7 +22,7 @@ jobs:
           git status
           git log
           git fetch --depth=2
-          CHANGED_FILES=$(git diff --name-only HEAD^ HEAD | tr '\n' ' ')
+          CHANGED_FILES=$(git diff --name-only main^ main | tr '\n' ' ')
           echo "Changed files: $CHANGED_FILES"
           echo "::set-output name=files::$CHANGED_FILES"
 
