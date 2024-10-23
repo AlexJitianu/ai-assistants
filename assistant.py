@@ -74,8 +74,8 @@ def process_file(file_path):
 
 
 if __name__ == "__main__":
- 
     changed_files = sys.argv[1:]
+    print(f"Start script: {changed_files}")
 
     # Iterate through each file and process it
     for file in changed_files:
