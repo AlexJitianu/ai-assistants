@@ -18,12 +18,8 @@ jobs:
       - name: Get list of changed files
         id: changes
         run: |
-          git checkout main
-          git reset --hard HEAD
-          git status
-          git log
-
-          CHANGED_FILES=$(git diff --name-only main^ main | tr '\n' ' ')
+          git fetch --depth=2
+          CHANGED_FILES=$(git diff --name-only HEAD^ HEAD | tr '\n' ' ')
           echo "Changed files: $CHANGED_FILES"
           echo "::set-output name=files::$CHANGED_FILES"
 
