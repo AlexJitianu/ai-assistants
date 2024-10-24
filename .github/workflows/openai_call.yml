@@ -23,6 +23,11 @@ jobs:
           echo "Changed files: $CHANGED_FILES"
           echo "::set-output name=files::$CHANGED_FILES"
 
+    
+      - name: Configure Git
+        run: |
+         git config --global user.name "github-actions[bot]"
+         git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -34,12 +39,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install --upgrade openai
 
-      - name: Run OpenAI correct grammar script
+      - name: Run correct grammar script
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # Use GitHub secret for the API key
+        run: python openai_call.py ${{ steps.changes.outputs.files }}
+        
+      - name: Run styleguide enforcer script
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # Use GitHub secret for the API key
         run: python assistant.py ${{ steps.changes.outputs.files }}
-        
-
 
       - name: Configure Git
         run: |
@@ -59,8 +67,8 @@ jobs:
         with:
           token: ${{ secrets.ACTIONS_BOT }}
           commit-message: "Processed files and create pull request"
-          branch: new-branch
+          branch: ai-checks
           base: main
-          title: "Processed files and updated"
-          body: "This PR contains processed files from the GitHub Actions workflow."
+          title: "AI Checks"
+          body: "This PR contains AI processed files from the GitHub Actions workflow."
           branch-suffix: timestamp   # Optional: Adds a suffix to avoid branch name conflicts
