@@ -19,6 +19,7 @@ jobs:
         id: changes
         run: |
           git fetch --depth=2
+          git branch -d grammar-check-bot
           CHANGED_FILES=$(git diff --name-only HEAD^ HEAD | tr '\n' ' ')
           echo "Changed files: $CHANGED_FILES"
           echo "::set-output name=files::$CHANGED_FILES"
@@ -46,14 +47,11 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Create a new branch
-        run: git checkout -b grammar-check-bot
-
       - name: Commit and push changes
         run: |
           git add . -- :!pr_message.txt  # Exclude pr_message.txt from git add
           git commit -m "Grammar check task"
-          git push origin grammar-check-bot
+          git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
         
