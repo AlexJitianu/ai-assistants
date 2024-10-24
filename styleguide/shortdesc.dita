@@ -2,7 +2,7 @@
 <!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
 <topic id="topic_xs4_cyh_tcc">
     <title>Purpose of short descriptions</title>
-    <shortdesc>Purpose of short descriptions</shortdesc>
+    <shortdesc>Short descriptions provide an overview of the content, serving in output previews and summaries.</shortdesc>
     <body>
         <p>The short description (shortdesc) element allows a writer to provide a short overview of
             the content of the topic. The shortdesc is typically generated as the first content
