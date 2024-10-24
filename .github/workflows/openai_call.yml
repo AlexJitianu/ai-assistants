@@ -50,7 +50,6 @@ jobs:
         run: |
           git add . -- :!pr_message.txt  # Exclude pr_message.txt from git add
           git commit -m "Grammar check task"
-          git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
         
@@ -64,3 +63,4 @@ jobs:
           base: main
           title: "Processed files and updated"
           body: "This PR contains processed files from the GitHub Actions workflow."
+          branch-suffix: timestamp   # Optional: Adds a suffix to avoid branch name conflicts
