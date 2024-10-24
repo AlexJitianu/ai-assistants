@@ -14,13 +14,12 @@ jobs:
         with:
           token: ${{ secrets.ACTIONS_BOT }}
           ref: main
+          fetch-depth: 2
 
       # Step 2: Get the list of changed files (from the last commit)
       - name: Get list of changed files
         id: changes
         run: |
-          git fetch --depth=2
-          git checkout origin/main
           CHANGED_FILES=$(git diff --name-only HEAD^ HEAD | tr '\n' ' ')
           echo "Changed files: $CHANGED_FILES"
           echo "::set-output name=files::$CHANGED_FILES"
