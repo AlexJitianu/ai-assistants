@@ -19,7 +19,6 @@ jobs:
         id: changes
         run: |
           git fetch --depth=2
-          git branch -d grammar-check-bot
           CHANGED_FILES=$(git diff --name-only HEAD^ HEAD | tr '\n' ' ')
           echo "Changed files: $CHANGED_FILES"
           echo "::set-output name=files::$CHANGED_FILES"
