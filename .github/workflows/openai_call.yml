@@ -13,6 +13,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.ACTIONS_BOT }}
+          ref: main
 
       # Step 2: Get the list of changed files (from the last commit)
       - name: Get list of changed files
@@ -43,21 +44,24 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # Use GitHub secret for the API key
         run: python openai_call.py ${{ steps.changes.outputs.files }}
-        
+     
+      - name: Commit and push changes
+        run: |
+          git add . -- :!pr_message.txt  # Exclude pr_message.txt from git add
+          git commit -m "Grammar check task"
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}   
+
       - name: Run styleguide enforcer script
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # Use GitHub secret for the API key
         run: python assistant.py ${{ steps.changes.outputs.files }}
 
-      - name: Configure Git
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Commit and push changes
         run: |
           git add . -- :!pr_message.txt  # Exclude pr_message.txt from git add
-          git commit -m "Grammar check task"
+          git commit -m "Styleguide enforcer script"
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
         
