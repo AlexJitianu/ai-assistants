@@ -10,12 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Authenticate `gh` CLI
-        run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
-
       - name: Set up GitHub CLI
         run: |
           sudo apt update
