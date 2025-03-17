@@ -1,0 +1,56 @@
+name: PR Comment Agent
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  process-comment:
+    if: github.event.issue.pull_request && contains(github.event.comment.body, '@Agent')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.issue.number }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Extract PR Information
+        id: extract
+        run: |
+          PR_NUMBER=${{ github.event.issue.number }}
+          PR_BRANCH=$(gh pr view $PR_NUMBER --json headRefName -q .headRefName)
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
+          echo "PR_BRANCH=$PR_BRANCH" >> $GITHUB_ENV
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
+
+      - name: Run Python Script
+        run: |
+          python3 .github/scripts/agent.py \
+            --message "${{ github.event.comment.body }}" \
+            --pr_number "$PR_NUMBER" \
+            --pr_branch "$PR_BRANCH" \
+            --repo "${{ github.repository }}" \
+            --actor "${{ github.actor }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
+
+      - name: Commit & Push Changes (if any)
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          if [ -n "$(git status --porcelain)" ]; then
+            git add .
+            git commit -m "Agent update from PR comment"
+            git push origin "$PR_BRANCH"
+          else
+            echo "No changes to commit."
+          fi
