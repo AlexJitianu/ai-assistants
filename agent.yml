@@ -1,0 +1,57 @@
+name: PR Comment Agent
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  process-comment:
+    if: github.event.issue.pull_request && contains(github.event.comment.body, '@AgentSN')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up GitHub CLI
+        run: |
+          sudo apt update
+          sudo apt install -y gh
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
+
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ai-checks-1729772617
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r .github/scripts/requirements.txt || echo "No requirements.txt found, skipping."
+
+      - name: Run Python Script
+        run: |
+          python3 agent.py \
+            --message "${{ github.event.comment.body }}" \
+            --pr_number "${{ github.event.issue.number }}" \
+            --pr_branch "ai-checks-1729772617" \
+            --repo "${{ github.repository }}" \
+            --actor "${{ github.actor }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
+
+      - name: Commit & Push Changes (if any)
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          if [ -n "$(git status --porcelain)" ]; then
+            git add .
+            git commit -m "Agent update from PR comment"
+            git push origin "ai-checks-1729772617"
+          else
+            echo "No changes to commit."
+          fi
