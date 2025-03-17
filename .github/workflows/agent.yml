@@ -34,7 +34,7 @@ jobs:
 
       - name: Run Python Script
         run: |
-          python3 agent.py \
+          python agent.py \
             --message "${{ github.event.comment.body }}" \
             --pr_number "${{ github.event.issue.number }}" \
             --pr_branch "ai-checks-1729772617" \
