@@ -10,10 +10,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set up GitHub CLI
+        run: |
+          sudo apt update
+          sudo apt install -y gh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract PR Branch Name
+        id: extract_branch
+        run: |
+          PR_NUMBER=${{ github.event.issue.number }}
+          PR_BRANCH=$(gh pr view $PR_NUMBER --json headRefName -q .headRefName)
+          echo "PR_BRANCH=$PR_BRANCH" >> $GITHUB_ENV
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Checkout PR branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.issue.number }}
+          ref: ${{ env.PR_BRANCH }}
           fetch-depth: 0
 
       - name: Set up Python
@@ -21,26 +37,20 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Extract PR Information
-        id: extract
+      - name: Install dependencies
         run: |
-          PR_NUMBER=${{ github.event.issue.number }}
-          PR_BRANCH=$(gh pr view $PR_NUMBER --json headRefName -q .headRefName)
-          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
-          echo "PR_BRANCH=$PR_BRANCH" >> $GITHUB_ENV
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
+          pip install -r .github/scripts/requirements.txt || echo "No requirements.txt found, skipping."
 
       - name: Run Python Script
         run: |
           python3 .github/scripts/agent.py \
             --message "${{ github.event.comment.body }}" \
-            --pr_number "$PR_NUMBER" \
-            --pr_branch "$PR_BRANCH" \
+            --pr_number "${{ github.event.issue.number }}" \
+            --pr_branch "${{ env.PR_BRANCH }}" \
             --repo "${{ github.repository }}" \
             --actor "${{ github.actor }}"
         env:
-          GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit & Push Changes (if any)
         run: |
@@ -50,7 +60,7 @@ jobs:
           if [ -n "$(git status --porcelain)" ]; then
             git add .
             git commit -m "Agent update from PR comment"
-            git push origin "$PR_BRANCH"
+            git push origin "${{ env.PR_BRANCH }}"
           else
             echo "No changes to commit."
           fi
