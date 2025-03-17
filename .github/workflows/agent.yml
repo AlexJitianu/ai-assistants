@@ -6,7 +6,7 @@ on:
 
 jobs:
   process-comment:
-    if: github.event.issue.pull_request && contains(github.event.comment.body, '@Agent')
+    if: github.event.issue.pull_request && contains(github.event.comment.body, '@AgentSN')
     runs-on: ubuntu-latest
 
     steps:
@@ -14,7 +14,7 @@ jobs:
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
 
       - name: Set up GitHub CLI
         run: |
