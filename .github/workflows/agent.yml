@@ -37,7 +37,7 @@ jobs:
           python agent.py \
             --message "${{ github.event.comment.body }}" \
             --pr_number "${{ github.event.issue.number }}" \
-            --pr_branch "ai-checks-1729772617" \
+            --pr_branch "ai-checks-1742278627" \
             --repo "${{ github.repository }}" \
             --actor "${{ github.actor }}"
         env:
