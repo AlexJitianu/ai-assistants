@@ -19,8 +19,8 @@ def main():
         f.write(f"Agent Response: {args.message}\n")
 
     # Stage and commit changes
-    subprocess.run(["git", "add", "."], check=True)
-    subprocess.run(["git", "commit", "-m", f"Agent update for PR #{args.pr_number}"], check=True)
+#    subprocess.run(["git", "add", "."], check=True)
+#    subprocess.run(["git", "commit", "-m", f"Agent update for PR #{args.pr_number}"], check=True)
 
 if __name__ == "__main__":
     main()
