@@ -23,6 +23,12 @@ jobs:
           ref: ai-checks-1742278627
           fetch-depth: 0
 
+        - name: Configure Git
+          run: |
+           git config --global user.name "github-actions[bot]"
+           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
