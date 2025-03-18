@@ -20,7 +20,7 @@ jobs:
       - name: Checkout PR branch
         uses: actions/checkout@v4
         with:
-          ref: ai-checks-1729772617
+          ref: ai-checks-1742278627
           fetch-depth: 0
 
       - name: Set up Python
