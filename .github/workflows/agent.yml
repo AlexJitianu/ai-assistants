@@ -59,3 +59,4 @@ jobs:
             git push origin "ai-checks-1742278627"
           else
             echo "No changes to commit."
+          fi
