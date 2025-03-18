@@ -60,3 +60,5 @@ jobs:
           git add .
           git commit -m "Agent update from PR comment"
           git push origin "ai-checks-1742278627"
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
