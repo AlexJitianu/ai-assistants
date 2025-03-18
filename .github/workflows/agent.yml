@@ -56,10 +56,7 @@ jobs:
           
 
           git status  
-          if [ -n "$(git status --porcelain)" ]; then
-            git add .
-            git commit -m "Agent update from PR comment"
-            git push origin "ai-checks-1742278627"
-          else
-            echo "No changes to commit."
-          fi
+          
+          git add .
+          git commit -m "Agent update from PR comment"
+          git push origin "ai-checks-1742278627"
