@@ -20,7 +20,7 @@ jobs:
       - name: Checkout PR branch
         uses: actions/checkout@v4
         with:
-          ref: ai-checks-1729772617
+          ref: ai-checks-1742278627
           fetch-depth: 0
 
       - name: Set up Python
@@ -51,7 +51,7 @@ jobs:
           if [ -n "$(git status --porcelain)" ]; then
             git add .
             git commit -m "Agent update from PR comment"
-            git push origin "ai-checks-1729772617"
+            git push origin "ai-checks-1742278627"
           else
             echo "No changes to commit."
           fi
