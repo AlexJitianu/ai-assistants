@@ -46,7 +46,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r .github/scripts/requirements.txt || echo "No requirements.txt found, skipping."
+          python -m pip install --upgrade pip
+          pip install --upgrade openai
 
       - name: Run Python Script
         run: |
