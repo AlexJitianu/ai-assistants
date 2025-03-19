@@ -18,6 +18,7 @@ def call_openai_assistant(filecontent, instructions=""):
         # Define the prefix
         prefix = "Please add a joke at the beginning of the shortdescription. #DOCUMENT#\n"
         filecontent = prefix + filecontent
+        print("All request:\n", filecontent) 
 
         thread = client.beta.threads.create()    
         message = client.beta.threads.messages.create(
@@ -79,6 +80,9 @@ def process_file(file_path, instructions=""):
 if __name__ == "__main__":
     instructions = sys.argv[1]
     changed_files = sys.argv[2:]
+    
+    if len(changed_files) == 1:
+        changed_files = changed_files[0].split()
     
     print(f"Start script: {changed_files}, Instructions: {instructions}")
 
