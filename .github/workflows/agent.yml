@@ -39,8 +39,8 @@ jobs:
       - name: Detect Changed Files
         id: changed-files
         run: |
-          git fetch origin ${{ github.event.pull_request.base.ref }}
-          git diff --name-only origin/${{ github.event.pull_request.base.ref }} > changed_files.txt
+          git fetch origin ${{ github.event.pull_request.base.ref }}:${{ github.event.pull_request.base.ref }}
+          git diff --name-only ${{ github.event.pull_request.base.ref }} > changed_files.txt
           files=$(cat changed_files.txt | tr '\n' ' ')
           echo "files=$files" >> $GITHUB_ENV
 
