@@ -24,7 +24,7 @@ def call_openai_assistant(filecontent, instructions=""):
         run = client.beta.threads.runs.create_and_poll(
             thread_id=thread.id,
             assistant_id="asst_M6iDHYtaRgTWjFy5O317JaPd",
-            instructions=instructions
+            instructions="Please add a joke at the beggining of the shortdescription."
         )
         if run.status == 'completed': 
             messages = client.beta.threads.messages.list(
@@ -73,7 +73,7 @@ def process_file(file_path, instructions=""):
 
 
 if __name__ == "__main__":
-    changed_files = sys.argv[1:]
+    changed_files = sys.argv[1]
     instructions = sys.argv[2] if len(sys.argv) > 2 else ""
     print(f"Start script: {changed_files}, Instructions: {instructions}")
 
