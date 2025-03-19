@@ -9,7 +9,9 @@ permissions:
 
 jobs:
   process-comment:
-    if: github.event.issue.pull_request && contains(github.event.comment.body, '@AgentSN')
+    if: >
+      github.event.issue.pull_request &&
+      contains(github.event.comment.body, '@AgentSN')
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +25,8 @@ jobs:
       - name: Checkout PR branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
+          # Explicitly access the pull request head ref
+          ref: ${{ github.event.issue.pull_request.head.ref }}
           fetch-depth: 0
 
       - name: Configure Git
@@ -39,7 +42,7 @@ jobs:
       - name: Get merge base commit
         id: merge-base
         run: |
-          BASE=$(git merge-base ${{ github.event.pull_request.head.ref }} origin/main)
+          BASE=$(git merge-base ${{ github.event.issue.pull_request.head.ref }} origin/main)
           echo "MERGE_BASE=$BASE" >> $GITHUB_ENV
   
       - name: Get changed files
