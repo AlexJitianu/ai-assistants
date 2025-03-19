@@ -63,7 +63,7 @@ jobs:
       - name: Run styleguide enforcer script
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # Use GitHub secret for the API key
-        run: python assistant-agent.py "docs/care.dita" "${{ github.event.comment.body }}"
+        run: python assistant-agent.py "${{ github.event.comment.body }}" "docs/care.dita" 
       
       - name: Commit & Push Changes (if any)
         run: |
