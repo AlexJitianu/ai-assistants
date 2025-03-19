@@ -55,8 +55,7 @@ jobs:
             --pr_number "${{ github.event.issue.number }}" \
             --pr_branch "ai-checks-1742278627" \
             --repo "${{ github.repository }}" \
-            --actor "${{ github.actor }}" \
-            --files "${{ env.files }}"
+            --actor "${{ github.actor }}"
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
 
