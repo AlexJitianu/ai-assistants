@@ -23,7 +23,7 @@ jobs:
       - name: Checkout PR branch
         uses: actions/checkout@v4
         with:
-          ref: ai-checks-1742389899
+          ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
 
       - name: Configure Git
@@ -39,13 +39,13 @@ jobs:
       - name: Get merge base commit
         id: merge-base
         run: |
-          BASE=$(git merge-base origin/ai-checks-1742389899 origin/main)
+          BASE=$(git merge-base ${{ github.event.pull_request.head.ref }} origin/main)
           echo "MERGE_BASE=$BASE" >> $GITHUB_ENV
   
       - name: Get changed files
         id: changed-files
         run: |
-          FILES=$(git diff --name-only $MERGE_BASE origin/ai-checks-1742389899 | tr '\n' ' ')
+          FILES=$(git diff --name-only $MERGE_BASE ${{ github.event.pull_request.head.ref }} | tr '\n' ' ')
           echo "CHANGED_FILES=$FILES" >> $GITHUB_ENV
   
       - name: Use changed files
