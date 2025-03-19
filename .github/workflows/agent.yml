@@ -39,13 +39,13 @@ jobs:
       - name: Get merge base commit
         id: merge-base
         run: |
-          BASE=$(git merge-base origin/${{ github.base_ref }} origin/${{ github.head_ref }})
+          BASE=$(git merge-base origin/ai-checks-1742389899 origin/main)
           echo "MERGE_BASE=$BASE" >> $GITHUB_ENV
   
       - name: Get changed files
         id: changed-files
         run: |
-          FILES=$(git diff --name-only $MERGE_BASE origin/${{ github.head_ref }} | tr '\n' ' ')
+          FILES=$(git diff --name-only $MERGE_BASE origin/ai-checks-1742389899 | tr '\n' ' ')
           echo "CHANGED_FILES=$FILES" >> $GITHUB_ENV
   
       - name: Use changed files
