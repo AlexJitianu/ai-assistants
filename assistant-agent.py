@@ -81,6 +81,9 @@ if __name__ == "__main__":
     instructions = sys.argv[1]
     changed_files = sys.argv[2:]
     
+    if len(changed_files) == 1:
+        changed_files = changed_files[0].split()
+    
     print(f"Start script: {changed_files}, Instructions: {instructions}")
 
     # Iterate through each file and process it
