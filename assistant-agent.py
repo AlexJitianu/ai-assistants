@@ -15,6 +15,10 @@ client = OpenAI(
 
 def call_openai_assistant(filecontent, instructions=""):
     try:
+        # Define the prefix
+        prefix = "Please add a joke at the beginning of the shortdescription. #DOCUMENT#\n"
+        filecontent = prefix + filecontent
+
         thread = client.beta.threads.create()    
         message = client.beta.threads.messages.create(
             thread_id=thread.id,
@@ -24,7 +28,7 @@ def call_openai_assistant(filecontent, instructions=""):
         run = client.beta.threads.runs.create_and_poll(
             thread_id=thread.id,
             assistant_id="asst_M6iDHYtaRgTWjFy5O317JaPd",
-            instructions="Please add a joke at the beggining of the shortdescription."
+            instructions=""
         )
         if run.status == 'completed': 
             messages = client.beta.threads.messages.list(
