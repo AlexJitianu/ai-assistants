@@ -23,7 +23,7 @@ jobs:
       - name: Checkout PR branch
         uses: actions/checkout@v4
         with:
-          ref: ai-checks-1742278627
+          ref: ai-checks-1742389899
           fetch-depth: 0
 
       - name: Configure Git
@@ -54,7 +54,7 @@ jobs:
           python agent.py \
             --message "${{ github.event.comment.body }}" \
             --pr_number "${{ github.event.issue.number }}" \
-            --pr_branch "ai-checks-1742278627" \
+            --pr_branch "ai-checks-1742389899" \
             --repo "${{ github.repository }}" \
             --actor "${{ github.actor }}"
         env:
@@ -74,6 +74,6 @@ jobs:
           
           git add .
           git commit -m "Agent update from PR comment"
-          git push origin "ai-checks-1742278627"
+          git push origin "ai-checks-1742389899"
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
