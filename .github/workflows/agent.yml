@@ -27,7 +27,7 @@ jobs:
           echo "PR branch name is: $BRANCH_NAME"
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
         env:
-          GH_TOKEN: ${{ secrets.ACTIONS_BOT }}
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
 
       - name: Checkout PR branch
         uses: actions/checkout@v4
