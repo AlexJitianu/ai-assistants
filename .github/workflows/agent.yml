@@ -36,13 +36,21 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Detect Changed Files
+      - name: Get merge base commit
+        id: merge-base
+        run: |
+          BASE=$(git merge-base origin/${{ github.base_ref }} origin/${{ github.head_ref }})
+          echo "MERGE_BASE=$BASE" >> $GITHUB_ENV
+  
+      - name: Get changed files
         id: changed-files
         run: |
-          git fetch origin ${{ github.event.pull_request.base.ref }}:${{ github.event.pull_request.base.ref }}
-          git diff --name-only ${{ github.event.pull_request.base.ref }} > changed_files.txt
-          files=$(cat changed_files.txt | tr '\n' ' ')
-          echo "files=$files" >> $GITHUB_ENV
+          FILES=$(git diff --name-only $MERGE_BASE origin/${{ github.head_ref }} | tr '\n' ' ')
+          echo "CHANGED_FILES=$FILES" >> $GITHUB_ENV
+  
+      - name: Use changed files
+        run: |
+          echo "Changed files: $CHANGED_FILES"
 
       - name: Install dependencies
         run: |
