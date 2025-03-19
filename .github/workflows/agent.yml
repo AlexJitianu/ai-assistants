@@ -20,6 +20,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
 
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ai-checks-1742389899
+          fetch-depth: 0
+
       - name: Get PR Details
         run: |
           PR_NUMBER=$(jq -r ".issue.number" "$GITHUB_EVENT_PATH")
@@ -27,13 +33,7 @@ jobs:
           echo "PR branch name is: $BRANCH_NAME"
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
         env:
-          GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
-
-      - name: Checkout PR branch
-        uses: actions/checkout@v4
-        with:
-          ref: ai-checks-1742389899
-          fetch-depth: 0
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}  
 
       - name: Configure Git
         run: |
