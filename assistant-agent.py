@@ -13,7 +13,7 @@ client = OpenAI(
 )
 
 
-def call_openai_assistant(filecontent):
+def call_openai_assistant(filecontent, instructions=""):
     try:
         thread = client.beta.threads.create()    
         message = client.beta.threads.messages.create(
@@ -22,9 +22,9 @@ def call_openai_assistant(filecontent):
             content=filecontent
         )
         run = client.beta.threads.runs.create_and_poll(
-        thread_id=thread.id,
-        assistant_id="asst_M6iDHYtaRgTWjFy5O317JaPd",
-        instructions=""
+            thread_id=thread.id,
+            assistant_id="asst_M6iDHYtaRgTWjFy5O317JaPd",
+            instructions="Please add a joke at the beggining of the shortdescription."
         )
         if run.status == 'completed': 
             messages = client.beta.threads.messages.list(
@@ -33,16 +33,15 @@ def call_openai_assistant(filecontent):
             for message in messages:
                 if message.role == "assistant":
                     print(message.content[0])
-                    a , b = split_string(message.content[0].text.value)
+                    a, b = split_string(message.content[0].text.value)
                     print("XML Content:\n", a) 
                     print("\nRest of the Content:\n", b)
-                    return a, b;
+                    return a, b
         else:
             print(run.status)
     except Exception as e:
         return f"Error: {str(e)}"
     return None, None
-
 
 
 def split_string(input_string):
@@ -56,14 +55,15 @@ def split_string(input_string):
     else:
         return None, None  # In case the format is not as expected
 
-def process_file(file_path):
+
+def process_file(file_path, instructions=""):
     # Add your processing logic here
     print(f"Processing file: {file_path}")
     # Example: If it's a text file, read and print its content
     if file_path.endswith('.dita'):
         with open(file_path, 'r') as f:
             content = f.read()     
-        a, b = call_openai_assistant(content)
+        a, b = call_openai_assistant(content, instructions)
         print(f"Response1: {a}")
         print(f"Response2: {b}")
 
@@ -72,15 +72,15 @@ def process_file(file_path):
             print(f"File updated with corrected content.")
 
 
-
 if __name__ == "__main__":
-    changed_files = sys.argv[1:]
-    print(f"Start script: {changed_files}")
+    changed_files = sys.argv[1]
+    instructions = sys.argv[2] if len(sys.argv) > 2 else ""
+    print(f"Start script: {changed_files}, Instructions: {instructions}")
 
     # Iterate through each file and process it
     for file in changed_files:
         print(f"File: {file}")
         if os.path.exists(file):
-            process_file(file)
+            process_file(file, instructions)
         else:
             print(f"File not found: {file}")
