@@ -20,6 +20,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
 
+      - name: Get PR Details
+        run: |
+          PR_NUMBER=$(jq -r ".issue.number" "$GITHUB_EVENT_PATH")
+          BRANCH_NAME=$(gh pr view "$PR_NUMBER" --json headRefName -q .headRefName)
+          echo "PR branch name is: $BRANCH_NAME"
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+        env:
+          GH_TOKEN: ${{ secrets.ACTIONS_BOT }}
+
       - name: Checkout PR branch
         uses: actions/checkout@v4
         with:
