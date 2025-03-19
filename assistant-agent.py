@@ -18,6 +18,7 @@ def call_openai_assistant(filecontent, instructions=""):
         # Define the prefix
         prefix = "Please add a joke at the beginning of the shortdescription. #DOCUMENT#\n"
         filecontent = prefix + filecontent
+        print("All request:\n", filecontent) 
 
         thread = client.beta.threads.create()    
         message = client.beta.threads.messages.create(
