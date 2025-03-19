@@ -31,11 +31,18 @@ jobs:
            git config --global user.name "github-actions[bot]"
            git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
+
+      - name: Detect Changed Files
+        id: changed-files
+        run: |
+          git fetch origin ${{ github.event.pull_request.base.ref }}
+          git diff --name-only origin/${{ github.event.pull_request.base.ref }} > changed_files.txt
+          files=$(cat changed_files.txt | tr '\n' ' ')
+          echo "files=$files" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: |
@@ -48,16 +55,21 @@ jobs:
             --pr_number "${{ github.event.issue.number }}" \
             --pr_branch "ai-checks-1742278627" \
             --repo "${{ github.repository }}" \
-            --actor "${{ github.actor }}"
+            --actor "${{ github.actor }}" \
+            --files "${{ env.files }}"
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
 
+      - name: Run styleguide enforcer script
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # Use GitHub secret for the API key
+        run: python assistant.py "${{ env.files }}" "${{ github.event.comment.body }}"
+      
       - name: Commit & Push Changes (if any)
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-
           git status  
           
           git add .
