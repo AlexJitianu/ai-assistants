@@ -106,4 +106,6 @@ if __name__ == "__main__":
     
     # Concatenate all `b` values with \n
     PR_COMMENT = "\n".join(pr_comments)
+    # Set PR_COMMENT as an environment variable
+    os.environ["PR_COMMENT"] = PR_COMMENT
     print(f"PR_COMMENT:\n{PR_COMMENT}")
