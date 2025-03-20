@@ -54,13 +54,13 @@ jobs:
       - name: Get merge base commit
         id: merge-base
         run: |
-          BASE=$(git merge-base origin/ai-checks-1742389899 origin/main)
+          BASE=$(git merge-base origin/${{ env.BRANCH_NAME }} origin/main)
           echo "MERGE_BASE=$BASE" >> $GITHUB_ENV
   
       - name: Get changed files
         id: changed-files
         run: |
-          FILES=$(git diff --name-only $MERGE_BASE origin/ai-checks-1742389899 | tr '\n' ' ')
+          FILES=$(git diff --name-only $MERGE_BASE origin/${{ env.BRANCH_NAME }} | tr '\n' ' ')
           echo "CHANGED_FILES=$FILES" >> $GITHUB_ENV
   
       - name: Use changed files
@@ -77,7 +77,7 @@ jobs:
           python agent.py \
             --message "${{ github.event.comment.body }}" \
             --pr_number "${{ github.event.issue.number }}" \
-            --pr_branch "ai-checks-1742389899" \
+            --pr_branch "${{ env.BRANCH_NAME }}" \
             --repo "${{ github.repository }}" \
             --actor "${{ github.actor }}"
         env:
@@ -97,6 +97,6 @@ jobs:
           
           git add .
           git commit -m "Agent update from PR comment"
-          git push origin "ai-checks-1742389899"
+          git push origin "${{ env.BRANCH_NAME }}"
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
