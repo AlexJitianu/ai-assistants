@@ -23,7 +23,7 @@ jobs:
       - name: Checkout PR branch
         uses: actions/checkout@v4
         with:
-          ref: ai-checks-1742389899
+          ref: main
           fetch-depth: 0
 
       - name: Get PR Details
@@ -34,6 +34,12 @@ jobs:
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}  
+
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: "${{ env.BRANCH_NAME }}" # Use the branch name from the previous step
+          fetch-depth: 0
 
       - name: Configure Git
         run: |
