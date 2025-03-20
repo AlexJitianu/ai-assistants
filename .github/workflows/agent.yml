@@ -86,7 +86,9 @@ jobs:
       - name: Run styleguide enforcer script
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # Use GitHub secret for the API key
-        run: python assistant-agent.py "${{ github.event.comment.body }}" "${{ env.CHANGED_FILES }}"
+        run: |
+          python assistant-agent.py "${{ github.event.comment.body }}" "${{ env.CHANGED_FILES }}"
+          echo "PR_COMMENT=$PR_COMMENT" >> $GITHUB_ENV
       
       - name: Post Comment on PR
         if: env.PR_COMMENT != ''
