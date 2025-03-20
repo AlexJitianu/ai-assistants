@@ -69,6 +69,9 @@ def process_file(file_path, instructions=""):
         with open(file_path, 'r') as f:
             content = f.read()     
         a, b = call_openai_assistant(content, instructions)
+        if a is None or b is None:
+            print("Error: Unable to process the response. Skipping this file.")
+            return None, None
         print(f"Response1: {a}")
         print(f"Response2: {b}")
 
