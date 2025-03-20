@@ -88,6 +88,14 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # Use GitHub secret for the API key
         run: python assistant-agent.py "${{ github.event.comment.body }}" "${{ env.CHANGED_FILES }}"
       
+      - name: Post Comment on PR
+        if: env.PR_COMMENT != ''
+        run: |
+          gh pr comment ${{ github.event.issue.number }} --body "$PR_COMMENT"
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
+          PR_COMMENT: ${{ env.PR_COMMENT }}
+
       - name: Commit & Push Changes (if any)
         run: |
           git config --global user.name "github-actions[bot]"
@@ -96,7 +104,7 @@ jobs:
           git status  
           
           git add .
-          git commit -m "Agent update from PR comment"
+          git commit -m "${{ env.PR_COMMENT }}"
           git push origin "${{ env.BRANCH_NAME }}"
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}

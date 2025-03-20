@@ -75,6 +75,9 @@ def process_file(file_path, instructions=""):
         with open(file_path, 'w') as f:
             f.write(a)
             print(f"File updated with corrected content.")
+        
+        return b  # Return the `b` value
+    return None
 
 
 if __name__ == "__main__":
@@ -86,10 +89,18 @@ if __name__ == "__main__":
     
     print(f"Start script: {changed_files}, Instructions: {instructions}")
 
+    pr_comments = []  # List to collect `b` values
+
     # Iterate through each file and process it
     for file in changed_files:
         print(f"File: {file}")
         if os.path.exists(file):
-            process_file(file, instructions)
+            b_value = process_file(file, instructions)
+            if b_value:
+                pr_comments.append(b_value)
         else:
             print(f"File not found: {file}")
+    
+    # Concatenate all `b` values with \n
+    PR_COMMENT = "\n".join(pr_comments)
+    print(f"PR_COMMENT:\n{PR_COMMENT}")
