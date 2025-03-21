@@ -2,6 +2,7 @@ import os
 import openai
 import json
 import sys
+import unicodedata
 
 openai.api_key = os.environ['OPENAI_API_KEY']
 
@@ -107,5 +108,6 @@ if __name__ == "__main__":
     # Concatenate all `b` values with \n
     PR_COMMENT = "\n".join(pr_comments)
     # Set PR_COMMENT as an environment variable
+    PR_COMMENT = unicodedata.normalize("NFC", PR_COMMENT)
     os.environ["PR_COMMENT"] = PR_COMMENT
     print(f"PR_COMMENT:\n{PR_COMMENT}")
