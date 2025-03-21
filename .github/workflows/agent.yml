@@ -96,7 +96,7 @@ jobs:
           PR_COMMENT=$(cat pr_message.txt)
           gh pr comment ${{ github.event.issue.number }} --body "$PR_COMMENT"
         env:
-          GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit & Push Changes (if any)
         run: |
