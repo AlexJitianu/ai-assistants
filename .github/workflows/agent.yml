@@ -92,12 +92,11 @@ jobs:
           echo "PR_COMMENT=$PR_COMMENT"
       
       - name: Post Comment on PR
-        if: env.PR_COMMENT != ''
         run: |
+          PR_COMMENT=$(cat pr_message.txt)
           gh pr comment ${{ github.event.issue.number }} --body "$PR_COMMENT"
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_BOT }}
-          PR_COMMENT: ${{ env.PR_COMMENT }}
 
       - name: Commit & Push Changes (if any)
         run: |
@@ -106,7 +105,7 @@ jobs:
           
           git status  
           
-          git add .
+          git add . -- :!pr_message.txt  # Exclude pr_message.txt from git add
           git commit -m "${{ env.PR_COMMENT }}"
           git push origin "${{ env.BRANCH_NAME }}"
         env:
