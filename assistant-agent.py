@@ -111,3 +111,6 @@ if __name__ == "__main__":
     PR_COMMENT = unicodedata.normalize("NFC", PR_COMMENT)
     os.environ["PR_COMMENT"] = PR_COMMENT
     print(f"PR_COMMENT:\n{PR_COMMENT}")
+    with open("pr_message.txt", "w", encoding="utf-8") as f:
+        f.write(PR_COMMENT)
+        print("PR message written to pr_message.txt")
